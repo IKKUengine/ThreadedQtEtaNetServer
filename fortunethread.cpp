@@ -62,8 +62,13 @@ FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObje
 //! [1]
 void FortuneThread::run()
 {
+//While-Schleife bis der Client die Verbindung abbricht bzw. timeout geht. Erst dann wird Thead geschlossen.
+//Bei erster Verbindung von Client zum Server soll das erste Array die Zustandgrößen und den Namen vom Feldelement übertragen
+//Weitere folgende Arrays übermitteln Zeitstempel und Messdaten zu den jeweiligen Zustandsgrößen.
+
     QTcpSocket tcpSocket;
 //! [1] //! [2]
+// Descriptor -> Indexierung der Threads
     if (!tcpSocket.setSocketDescriptor(socketDescriptor)) {
         emit error(tcpSocket.error());
         return;
@@ -74,6 +79,7 @@ void FortuneThread::run()
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_0);
     out << text;
+
 //! [3] //! [4]
 
     tcpSocket.write(block);
