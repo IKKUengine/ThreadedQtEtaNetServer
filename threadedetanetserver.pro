@@ -9,7 +9,7 @@ SOURCES       = dialog.cpp \
                 main.cpp
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/network/threadedfortuneserver
-INSTALLS += target
+#target.path = E:\Softwareprojekte\etaNet\EtaNetManagement
+#INSTALLS += target
 
 

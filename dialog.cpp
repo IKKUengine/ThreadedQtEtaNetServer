@@ -68,7 +68,7 @@ Dialog::Dialog(QWidget *parent)
         QMessageBox::critical(this, tr("Threaded Fortune Server"),
                               tr("Unable to start the server: %1.")
                               .arg(server.errorString()));
-        close();
+        this->close();
         return;
     }
 
