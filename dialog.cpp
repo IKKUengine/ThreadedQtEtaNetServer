@@ -63,8 +63,8 @@ Dialog::Dialog(QWidget *parent)
     statusLabel->setWordWrap(true);
     quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
-
-    if (!server.listen()) {
+     QHostAddress ipAddress("192.168.2.100");
+    if (!server.listen(ipAddress, 50005)) {
         QMessageBox::critical(this, tr("Threaded Fortune Server"),
                               tr("Unable to start the server: %1.")
                               .arg(server.errorString()));
@@ -72,22 +72,21 @@ Dialog::Dialog(QWidget *parent)
         return;
     }
 
-    QString ipAddress;
-    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
-    for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-            ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
-            break;
-        }
-    }
-    // if we did not find one, use IPv4 localhost
-    if (ipAddress.isEmpty())
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+//    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+//    // use the first non-localhost IPv4 address
+//    for (int i = 0; i < ipAddressesList.size(); ++i) {
+//        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
+//            ipAddressesList.at(i).toIPv4Address()) {
+//            ipAddress = ipAddressesList.at(i).toString();
+//            break;
+//        }
+//    }
+//    // if we did not find one, use IPv4 localhost
+//    if (ipAddress.isEmpty())
+//        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
     statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
                             "Run the Fortune Client example now.")
-                         .arg(ipAddress).arg(server.serverPort()));
+                         .arg(ipAddress.toString()).arg(server.serverPort()));
 
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
 
