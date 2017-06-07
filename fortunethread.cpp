@@ -59,7 +59,7 @@ FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObje
     tcpSocket->setSocketDescriptor(socketDescriptor);
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_4_0);
-    connect(this->tcpSocket, &QIODevice::readyRead, this, &FortuneThread::readClientData);
+    connect(this->tcpSocket, &QIODevice::readyRead, this, &FortuneThread::read);
 }
 //! [0]
 
@@ -84,7 +84,7 @@ void FortuneThread::run()
 
 
 
-void  FortuneThread::readClientData()
+void  FortuneThread::read()
 {
     in.startTransaction();
 
