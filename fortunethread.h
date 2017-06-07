@@ -53,6 +53,7 @@
 
 #include <QThread>
 #include <QTcpSocket>
+#include <QDataStream>
 
 //! [0]
 class FortuneThread : public QThread
@@ -67,7 +68,12 @@ public:
 signals:
     void error(QTcpSocket::SocketError socketError);
 
+private slots:
+    void read();
+
 private:
+    QDataStream in;
+    QTcpSocket* tcpSocket;
     int socketDescriptor;
     QString text;
 };

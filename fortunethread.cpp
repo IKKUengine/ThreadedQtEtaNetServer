@@ -54,36 +54,49 @@
 
 //! [0]
 FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObject *parent)
-    : QThread(parent), socketDescriptor(socketDescriptor), text(fortune)
+    : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
 {
+    tcpSocket->setSocketDescriptor(socketDescriptor);
+    in.setDevice(tcpSocket);
+    in.setVersion(QDataStream::Qt_4_0);
+    connect(this->tcpSocket, &QIODevice::readyRead, this, &FortuneThread::readClientData);
 }
 //! [0]
 
 //! [1]
 void FortuneThread::run()
 {
-//While-Schleife bis der Client die Verbindung abbricht bzw. timeout geht. Erst dann wird Thead geschlossen.
-//Bei erster Verbindung von Client zum Server soll das erste Array die Zustandgrößen und den Namen vom Feldelement übertragen
-//Weitere folgende Arrays übermitteln Zeitstempel und Messdaten zu den jeweiligen Zustandsgrößen.
-
-    QTcpSocket tcpSocket;
-//! [1] //! [2]
+    //Ursprünglicher Dataübertragung zum Client
+//    QTcpSocket tcpSocket;
 // Descriptor -> Indexierung der Threads
-    if (!tcpSocket.setSocketDescriptor(socketDescriptor)) {
-        emit error(tcpSocket.error());
-        return;
-    }
-//! [2] //! [3]
-
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
-    out << text;
-
-//! [3] //! [4]
-
-    tcpSocket.write(block);
-    tcpSocket.disconnectFromHost();
-    tcpSocket.waitForDisconnected();
+//    if (!tcpSocket->setSocketDescriptor(socketDescriptor)) {
+//        emit error(tcpSocket->error());
+//        return;
+//    }
+//    QByteArray block;
+//    QDataStream out(&block, QIODevice::WriteOnly);
+//    out.setVersion(QDataStream::Qt_4_0);
+//    out << text;
+//    tcpSocket.write(block);
+//    tcpSocket.disconnectFromHost();
+//    tcpSocket.waitForDisconnected();
 }
-//! [4]
+
+
+
+void  FortuneThread::readClientData()
+{
+    in.startTransaction();
+
+    QString nextFortune;
+    in >> nextFortune;
+
+    if (!in.commitTransaction())
+        return;
+
+ //   if (nextFortune == currentFortune) {
+ //       QTimer::singleShot(0, this, &Client::requestNewFortune);
+ //       return;
+ //   }
+
+}
