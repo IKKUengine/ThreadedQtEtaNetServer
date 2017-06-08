@@ -64,10 +64,20 @@ class Dialog : public QWidget
     Q_OBJECT
 
 public:
+    static Dialog& getInstance();
+    void setTextLabel(QString string);
+
+
+
+private:
+
     Dialog(QWidget *parent = 0);
+    Dialog(const Dialog&);
+
 
 private:
     QLabel *statusLabel;
+    QLabel *messageLabel;
     QPushButton *quitButton;
     FortuneServer server;
 };

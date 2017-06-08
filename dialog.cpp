@@ -59,13 +59,15 @@
 Dialog::Dialog(QWidget *parent)
     : QWidget(parent)
 {
+    messageLabel = new QLabel;
+    messageLabel->setWordWrap(true);
     statusLabel = new QLabel;
     statusLabel->setWordWrap(true);
     quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
      QHostAddress ipAddress("192.168.2.100");
     if (!server.listen(ipAddress, 50005)) {
-        QMessageBox::critical(this, tr("Threaded Fortune Server"),
+        QMessageBox::critical(this, tr("\u03B7Net Server"),
                               tr("Unable to start the server: %1.")
                               .arg(server.errorString()));
         this->close();
@@ -84,9 +86,10 @@ Dialog::Dialog(QWidget *parent)
 //    // if we did not find one, use IPv4 localhost
 //    if (ipAddress.isEmpty())
 //        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-    statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
-                            "Run the Fortune Client example now.")
+    statusLabel->setText(tr("The \u03B7Net server is running on\n\nIP: %1\nport: %2\n\n"
+                            "Run the \u03B7Net Client now.")
                          .arg(ipAddress.toString()).arg(server.serverPort()));
+    messageLabel->setText(tr("Wait for data from \u03B7Net clients..."));
 
     connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -97,7 +100,20 @@ Dialog::Dialog(QWidget *parent)
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(statusLabel);
+    mainLayout->addWidget(messageLabel);
     mainLayout->addLayout(buttonLayout);
     setLayout(mainLayout);
-    setWindowTitle(tr("Threaded Fortune Server"));
+    setWindowTitle(tr("\u03B7Net Management"));
 }
+
+Dialog& Dialog::getInstance()
+{
+    static Dialog instance;
+    return instance;
+}
+
+void  Dialog::setTextLabel(QString string)
+{
+    messageLabel->setText(string);
+}
+

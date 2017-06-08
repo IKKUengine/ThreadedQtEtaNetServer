@@ -51,6 +51,8 @@
 #include "fortunethread.h"
 
 #include <QtNetwork>
+#include "dialog.h"
+
 
 //! [0]
 FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObject *parent)
@@ -91,8 +93,11 @@ void  FortuneThread::read()
     QString nextFortune;
     in >> nextFortune;
 
+    Dialog::getInstance().setTextLabel(text);
+
     if (!in.commitTransaction())
         return;
+
 
  //   if (nextFortune == currentFortune) {
  //       QTimer::singleShot(0, this, &Client::requestNewFortune);
