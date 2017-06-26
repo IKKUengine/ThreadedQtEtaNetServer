@@ -50,10 +50,15 @@
 
 #include <QApplication>
 #include <QtCore>
+#include <QDebug>
+
 
 #include <stdlib.h>
 
 #include "dialog.h"
+
+  // Change to any path you wish
+//static const QString path = "example.db";
 
 int main(int argc, char *argv[])
 {

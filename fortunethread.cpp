@@ -68,7 +68,7 @@ FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObje
 //! [1]
 void FortuneThread::run()
 {
-    //Ursprünglicher Dataübertragung zum Client
+//Ursprünglicher Dataübertragung zum Client
 //    QTcpSocket tcpSocket;
 // Descriptor -> Indexierung der Threads
 //    if (!tcpSocket->setSocketDescriptor(socketDescriptor)) {
