@@ -39,7 +39,7 @@ public:
      * @brief Creates a new 'people' table if it doesn't already exist
      * @return true - 'people' table created successfully, false - table not created
      */
-    bool createTable();
+    bool createTable(QString name, QString headerTable);
 
     /**
      * @brief Add person data to db

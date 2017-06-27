@@ -112,8 +112,8 @@ Dialog& Dialog::getInstance()
     return instance;
 }
 
-void  Dialog::setTextLabel(QString string)
+void  Dialog::setTextLabel(QString text)
 {
-    messageLabel->setText(string);
+    messageLabel->setText(text);
 }
 

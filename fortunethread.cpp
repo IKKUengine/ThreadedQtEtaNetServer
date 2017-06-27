@@ -55,18 +55,18 @@
 
 
 //! [0]
-FortuneThread::FortuneThread(int socketDescriptor, const QString &fortune, QObject *parent)
+EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
 {
     tcpSocket->setSocketDescriptor(socketDescriptor);
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_4_0);
-    connect(this->tcpSocket, &QIODevice::readyRead, this, &FortuneThread::read);
+    connect(this->tcpSocket, &QIODevice::readyRead, this, &EtaNetThread::read);
 }
 //! [0]
 
 //! [1]
-void FortuneThread::run()
+void EtaNetThread::run()
 {
 //Ursprünglicher Dataübertragung zum Client
 //    QTcpSocket tcpSocket;
@@ -86,7 +86,7 @@ void FortuneThread::run()
 
 
 
-void  FortuneThread::read()
+void  EtaNetThread::read()
 {
     in.startTransaction();
 

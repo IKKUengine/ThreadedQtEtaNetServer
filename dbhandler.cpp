@@ -32,7 +32,7 @@ bool DbHandler::isOpen() const
     return m_db.isOpen();
 }
 
-bool DbHandler::createTable()
+bool DbHandler::createTable(QString name, QString headerTable)
 {
     bool success = false;
 

@@ -59,27 +59,65 @@ class QLabel;
 class QPushButton;
 QT_END_NAMESPACE
 
+/**
+ * \class Dialog
+ *
+ * \brief The Dialog class is the base class of dialog windows.
+ *
+ * The dialog window is a top-level window used for server tasks and communications with the field element clients.
+ * Singleton pattern: only one instance of the class should created.
+ */
 class Dialog : public QWidget
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief Global access point to the Singleton.
+     * @return Pointer to the static instance.
+     */
     static Dialog& getInstance();
-    void setTextLabel(QString string);
-
-
+    /**
+     * @brief Set the text of the text label.
+     * @param text - text of the label.
+     *
+     */
+    void setTextLabel(QString text);
 
 private:
-
+    /**
+     * @brief Constructor
+     *
+     *
+     * Constructor sets up connection with db and opens it
+     * @param path - absolute path to db file
+     */
     Dialog(QWidget *parent = 0);
+    /**
+     * @brief Destructor
+     *
+     * Close the db connection
+     */
     Dialog(const Dialog&);
 
 
 private:
+    /**
+     * @brief label - is used for displaying text
+     */
     QLabel *statusLabel;
+    /**
+     * @brief label - is used for displaying text
+     */
     QLabel *messageLabel;
+    /**
+     * @brief button - is used for close the dialog window
+     */
     QPushButton *quitButton;
-    FortuneServer server;
+    /**
+     * @brief server - creates the server instance
+     */
+    EtaNetServer server;
 };
 
 #endif

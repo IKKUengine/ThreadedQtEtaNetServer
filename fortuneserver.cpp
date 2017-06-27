@@ -54,8 +54,8 @@
 
 #include <stdlib.h>
 
-//! [0]
-FortuneServer::FortuneServer(QObject *parent)
+
+EtaNetServer::EtaNetServer(QObject *parent)
     : QTcpServer(parent)
 {
     fortunes << tr("\u03B7Net: Hallo World Jörn! ")
@@ -65,15 +65,12 @@ FortuneServer::FortuneServer(QObject *parent)
              << tr("\u03B7Net: Hallo World Maurice!")
              << tr("\u03B7Net: Hallo World IKKU!");
 }
-//! [0]
 
-//! [1]
-void FortuneServer::incomingConnection(qintptr socketDescriptor)
+void EtaNetServer::incomingConnection(qintptr socketDescriptor)
 {
     QString fortune = fortunes.at(qrand() % fortunes.size());
-    FortuneThread *thread = new FortuneThread(socketDescriptor, fortune, this);
+    EtaNetThread *thread = new EtaNetThread(socketDescriptor, fortune, this);
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
     thread->start();
 
 }
-//! [1]

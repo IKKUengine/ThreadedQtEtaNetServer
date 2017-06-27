@@ -54,20 +54,35 @@
 #include <QStringList>
 #include <QTcpServer>
 
-//! [0]
-class FortuneServer : public QTcpServer
+/**
+ * \class EtaNetManagerServer
+ *
+ * \brief The Dialog class is the base class of dialog windows.
+ *
+ * The dialog window is a top-level window used for server tasks and communications with the field element clients.
+ * Singleton pattern: only one instance of the class should created.
+ */
+class EtaNetServer : public QTcpServer
 {
     Q_OBJECT
 
 public:
-    FortuneServer(QObject *parent = 0);
+    /**
+     * @brief Constructor
+     */
+    EtaNetServer(QObject *parent = 0);
 
 protected:
+    /**
+     * @brief This virtual function is called by server when a new connection is available.
+     * @param socket descriptor - is the native socket descriptor for the accepted connection
+     *
+     */
     void incomingConnection(qintptr socketDescriptor) override;
 
 private:
     QStringList fortunes;
 };
-//! [0]
+
 
 #endif
