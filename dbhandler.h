@@ -83,7 +83,7 @@ public:
 
 private:
     /**
-     * @brief database - represents a connection to a database.
+     * @brief database object - represents a connection to a database.
      */
     QSqlDatabase m_db;
 };

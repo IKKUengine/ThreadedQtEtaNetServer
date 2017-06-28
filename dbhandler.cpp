@@ -37,11 +37,13 @@ bool DbHandler::createTable(QString table, QString columns)
     bool success = false;
 
     QSqlQuery query;
-    query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
+    const QString CREATETABLE = "CREATE TABLE ";
+    query.prepare(CREATETABLE + table + columns);
+    //query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
 
     if (!query.exec())
     {
-        qDebug() << "Couldn't create the table 'people': one might already exist.";
+        qDebug() << "Couldn't create the table: one might already exist.";
         success = false;
     }
 
@@ -52,25 +54,28 @@ bool DbHandler::insertTuble(const QString& table, const QString& values)
 {
     bool success = false;
 
-//    if (!name.isEmpty())
-//    {
-//        QSqlQuery queryAdd;
+    if (!table.isEmpty())
+    {
+        QSqlQuery queryAdd;
+        const QString INSERTINTO = "INSERT INTO ";
+        const QString VALUES = "VALUES ";
+         queryAdd.prepare(INSERTINTO + table + VALUES + values);
 //        queryAdd.prepare("INSERT INTO people (name) VALUES (:name)");
 //        queryAdd.bindValue(":name", name);
 
-//        if(queryAdd.exec())
-//        {
-//            success = true;
-//        }
-//        else
-//        {
-//            qDebug() << "add person failed: " << queryAdd.lastError();
-//        }
-//    }
-//    else
-//    {
-//        qDebug() << "add person failed: name cannot be empty";
-//    }
+        if(queryAdd.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "add person failed: " << queryAdd.lastError();
+        }
+    }
+    else
+    {
+        qDebug() << "add table failed: name cannot be empty";
+    }
 
     return success;
 }
