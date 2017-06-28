@@ -32,7 +32,7 @@ bool DbHandler::isOpen() const
     return m_db.isOpen();
 }
 
-bool DbHandler::createTable(QString name, QString headerTable)
+bool DbHandler::createTable(QString table, QString columns)
 {
     bool success = false;
 
@@ -48,58 +48,81 @@ bool DbHandler::createTable(QString name, QString headerTable)
     return success;
 }
 
-bool DbHandler::addPerson(const QString& name)
+bool DbHandler::insertTuble(const QString& table, const QString& values)
 {
     bool success = false;
 
-    if (!name.isEmpty())
-    {
-        QSqlQuery queryAdd;
-        queryAdd.prepare("INSERT INTO people (name) VALUES (:name)");
-        queryAdd.bindValue(":name", name);
+//    if (!name.isEmpty())
+//    {
+//        QSqlQuery queryAdd;
+//        queryAdd.prepare("INSERT INTO people (name) VALUES (:name)");
+//        queryAdd.bindValue(":name", name);
 
-        if(queryAdd.exec())
-        {
-            success = true;
-        }
-        else
-        {
-            qDebug() << "add person failed: " << queryAdd.lastError();
-        }
-    }
-    else
-    {
-        qDebug() << "add person failed: name cannot be empty";
-    }
+//        if(queryAdd.exec())
+//        {
+//            success = true;
+//        }
+//        else
+//        {
+//            qDebug() << "add person failed: " << queryAdd.lastError();
+//        }
+//    }
+//    else
+//    {
+//        qDebug() << "add person failed: name cannot be empty";
+//    }
 
     return success;
 }
 
-bool DbHandler::removePerson(const QString& name)
+bool DbHandler::deleteTuble(const QString& table, const QString& primaryKey)
 {
     bool success = false;
 
-    if (personExists(name))
-    {
-        QSqlQuery queryDelete;
-        queryDelete.prepare("DELETE FROM people WHERE name = (:name)");
-        queryDelete.bindValue(":name", name);
-        success = queryDelete.exec();
+//    if (personExists(name))
+//    {
+//        QSqlQuery queryDelete;
+//        queryDelete.prepare("DELETE FROM people WHERE name = (:name)");
+//        queryDelete.bindValue(":name", name);
+//        success = queryDelete.exec();
 
-        if(!success)
-        {
-            qDebug() << "remove person failed: " << queryDelete.lastError();
-        }
-    }
-    else
-    {
-        qDebug() << "remove person failed: person doesnt exist";
-    }
+//        if(!success)
+//        {
+//            qDebug() << "remove person failed: " << queryDelete.lastError();
+//        }
+//    }
+//    else
+//    {
+//        qDebug() << "remove person failed: person doesnt exist";
+//    }
 
     return success;
 }
 
-void DbHandler::printAllPersons() const
+bool DbHandler::isTubel(const QString& table, const QString& primaryKey) const
+{
+    bool exists = false;
+
+//    QSqlQuery checkQuery;
+//    checkQuery.prepare("SELECT name FROM people WHERE name = (:name)");
+//    checkQuery.bindValue(":name", name);
+
+//    if (checkQuery.exec())
+//    {
+//        if (checkQuery.next())
+//        {
+//            exists = true;
+//        }
+//    }
+//    else
+//    {
+//        qDebug() << "person exists failed: " << checkQuery.lastError();
+//    }
+
+    return exists;
+}
+
+void DbHandler::printAllTubel(const QString& table) const
 {
     qDebug() << "Persons in db:";
     QSqlQuery query("SELECT * FROM people");
@@ -111,30 +134,7 @@ void DbHandler::printAllPersons() const
     }
 }
 
-bool DbHandler::personExists(const QString& name) const
-{
-    bool exists = false;
-
-    QSqlQuery checkQuery;
-    checkQuery.prepare("SELECT name FROM people WHERE name = (:name)");
-    checkQuery.bindValue(":name", name);
-
-    if (checkQuery.exec())
-    {
-        if (checkQuery.next())
-        {
-            exists = true;
-        }
-    }
-    else
-    {
-        qDebug() << "person exists failed: " << checkQuery.lastError();
-    }
-
-    return exists;
-}
-
-bool DbHandler::removeAllPersons()
+bool DbHandler::removeAllTubel(const QString& table)
 {
     bool success = false;
 

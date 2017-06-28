@@ -55,12 +55,11 @@
 #include <QTcpServer>
 
 /**
- * \class EtaNetManagerServer
+ * \class EtaNetServer
  *
- * \brief The Dialog class is the base class of dialog windows.
+ * \brief The EtaNetServer makes it possible to accept incoming TCP connections.
  *
- * The dialog window is a top-level window used for server tasks and communications with the field element clients.
- * Singleton pattern: only one instance of the class should created.
+ * You can listen on a specific address or on all the machine's addresses.
  */
 class EtaNetServer : public QTcpServer
 {

@@ -10,10 +10,7 @@
  *
  * DbHandler sets up the connection with SQL database
  * and performs some basics queries. The class requires
- * existing SQL database. You can create it with sqlite:
- * 1. $ sqlite3 people.db
- * 2. sqilte> CREATE TABLE people(ids integer primary key, name text);
- * 3. sqlite> .quit
+ * existing SQL database.
  */
 class DbHandler
 {
@@ -22,7 +19,7 @@ public:
      * @brief Constructor
      *
      * Constructor sets up connection with db and opens it
-     * @param path - absolute path to db file
+     * @param {const QString&} path - absolute path to db file
      */
     DbHandler(const QString& path);
 
@@ -33,47 +30,61 @@ public:
      */
     ~DbHandler();
 
+    /**
+     * @brief Check if db exists and available
+     * @return {bool} true - db reachable, false - db not reachable
+     */
     bool isOpen() const;
 
     /**
-     * @brief Creates a new 'people' table if it doesn't already exist
-     * @return true - 'people' table created successfully, false - table not created
+     * @brief Creates a new table if it doesn't already exist
+     * @param {QString} table - name of new table
+     * @param {QString} columns - names of new header
+     * @return {bool} true - table created successfully, false - table not created
      */
-    bool createTable(QString name, QString headerTable);
+    bool createTable(QString table, QString columns);
 
     /**
-     * @brief Add person data to db
-     * @param name - name of person to add
+     * @brief Add tubel into one of a tabels
+     * @param {QString} table - name of table
+     * @param {QString} columns - set of the values
      * @return true - person added successfully, false - person not added
      */
-    bool addPerson(const QString& name);
+    bool insertTuble( const QString& table, const QString& values);
 
     /**
-     * @brief Remove person data from db
-     * @param name - name of person to remove.
+     * @brief Delete tubel from one of a tabels
+     * @param {QString} table - name of table
+     * @param {QString} columns - name of the primary Key
      * @return true - person removed successfully, false - person not removed
      */
-    bool removePerson(const QString& name);
+    bool deleteTuble(const QString& table, const QString& primaryKey);
 
     /**
      * @brief Check if person of name "name" exists in db
-     * @param name - name of person to check.
+     * @param {QString} table - name of table
+     * @param {QString} columns - name of the primary Key
      * @return true - person exists, false - person does not exist
      */
-    bool personExists(const QString& name) const;
+    bool isTubel(const QString& table, const QString& primaryKey) const;
 
     /**
-     * @brief Print names of all persons in db
+     * @brief Print all tubel into one of a tabels
+     * @param {QString} table - name of table
      */
-    void printAllPersons() const;
+    void printAllTubel(const QString& table) const;
 
     /**
-     * @brief Remove all persons from db
-     * @return true - all persons removed successfully, false - not removed
+     * @brief Remove all tubel into one of a tabels
+     * @param {QString} table - name of table
+     * @return {bool} true - all persons removed successfully, false - not removed
      */
-    bool removeAllPersons();
+    bool removeAllTubel(const QString& table);
 
 private:
+    /**
+     * @brief database - represents a connection to a database.
+     */
     QSqlDatabase m_db;
 };
 

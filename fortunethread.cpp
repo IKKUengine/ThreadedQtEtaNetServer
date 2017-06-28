@@ -52,9 +52,8 @@
 
 #include <QtNetwork>
 #include "dialog.h"
+#include <QJsonObject>
 
-
-//! [0]
 EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
 {
@@ -63,9 +62,7 @@ EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject
     in.setVersion(QDataStream::Qt_4_0);
     connect(this->tcpSocket, &QIODevice::readyRead, this, &EtaNetThread::read);
 }
-//! [0]
 
-//! [1]
 void EtaNetThread::run()
 {
 //Ursprünglicher Dataübertragung zum Client
@@ -84,8 +81,6 @@ void EtaNetThread::run()
 //    tcpSocket.waitForDisconnected();
 }
 
-
-
 void  EtaNetThread::read()
 {
     in.startTransaction();
@@ -93,9 +88,10 @@ void  EtaNetThread::read()
     QString nextFortune;
     in >> nextFortune;
 
-    Dialog::getInstance().setTextLabel(text);
+    Dialog::getInstance().setTextLabel(nextFortune  );
 
     if (!in.commitTransaction())
+
         return;
 
 
