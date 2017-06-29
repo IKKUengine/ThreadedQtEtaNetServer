@@ -11,6 +11,14 @@
  * DbHandler sets up the connection with SQL database
  * and performs some basics queries. The class requires
  * existing SQL database.
+ * There are advantages and disadvantages to using a serverless db.
+ * The main advantage is that there is no separate server process to install,
+ * setup, configure, initialize, manage, and troubleshoot.
+ * This is one reason why SQLite is a "zero-configuration" database engine.
+ * etaNet application will be easier to handle.
+ * The clients are not allowed to talk directly to the database,
+ * because they should initially authenticated by the management.
+ * And for security reasons, only the management should have access to db.
  */
 class DbHandler
 {

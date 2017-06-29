@@ -40,6 +40,7 @@ bool DbHandler::createTable(QString table, QString columns)
     const QString CREATETABLE = "CREATE TABLE ";
     query.prepare(CREATETABLE + table + columns);
     //query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
+    //QString dsn = QString("Driver={PostgreSQL};Server=%1;Port=5432;Database=%2;").arg(servername).arg(dbname);
 
     if (!query.exec())
     {

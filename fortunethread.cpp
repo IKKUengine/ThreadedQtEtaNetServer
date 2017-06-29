@@ -52,7 +52,6 @@
 
 #include <QtNetwork>
 #include "dialog.h"
-#include <QJsonObject>
 
 EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
@@ -88,7 +87,7 @@ void  EtaNetThread::read()
     QString nextFortune;
     in >> nextFortune;
 
-    Dialog::getInstance().setTextLabel(nextFortune  );
+    Dialog::getInstance().setTextLabel(nextFortune);
 
     if (!in.commitTransaction())
 
