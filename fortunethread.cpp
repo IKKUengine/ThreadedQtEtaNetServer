@@ -53,6 +53,10 @@
 #include <QtNetwork>
 #include "dialog.h"
 
+#include <dbhandler.h>
+
+static const QString path = "example.db";
+
 EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
 {
@@ -82,15 +86,27 @@ void EtaNetThread::run()
 
 void  EtaNetThread::read()
 {
+    DbHandler db(path);
     in.startTransaction();
 
-    QString nextFortune;
-    in >> nextFortune;
+    QString message;
+    in >> message;
 
-    Dialog::getInstance().setTextLabel(nextFortune);
+    if (db.isOpen())
+    {
+        if(!db.insertTuble(message)){
+            db.createTable(message);
+            db.insertTuble(message);
+        }
+    }
+    else
+    {
+        qDebug() << "Database is not open!";
+    }
+
+    Dialog::getInstance().setTextLabel(message);
 
     if (!in.commitTransaction())
-
         return;
 
 

@@ -32,52 +32,44 @@ bool DbHandler::isOpen() const
     return m_db.isOpen();
 }
 
-bool DbHandler::createTable(QString table, QString columns)
+bool DbHandler::createTable(QString message)
 {
     bool success = false;
-
     QSqlQuery query;
+    QStringList messageList = message.split(';');
     const QString CREATETABLE = "CREATE TABLE ";
-    query.prepare(CREATETABLE + table + columns);
+    query.prepare(CREATETABLE + messageList[0] + messageList[1]);
     //query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
-    //QString dsn = QString("Driver={PostgreSQL};Server=%1;Port=5432;Database=%2;").arg(servername).arg(dbname);
-
     if (!query.exec())
     {
         qDebug() << "Couldn't create the table: one might already exist.";
         success = false;
     }
-
     return success;
 }
 
-bool DbHandler::insertTuble(const QString& table, const QString& values)
+bool DbHandler::insertTuble(QString& message)
 {
     bool success = false;
-
-    if (!table.isEmpty())
+    if (!message.isEmpty())
     {
-        QSqlQuery queryAdd;
-        const QString INSERTINTO = "INSERT INTO ";
-        const QString VALUES = "VALUES ";
-         queryAdd.prepare(INSERTINTO + table + VALUES + values);
-//        queryAdd.prepare("INSERT INTO people (name) VALUES (:name)");
-//        queryAdd.bindValue(":name", name);
-
-        if(queryAdd.exec())
+        QSqlQuery query;
+        QStringList messageList = message.split(';');
+        const QString VALUES = " VALUES ";
+        const QString INSERT = "INSERT INTO ";
+        if(query.exec(INSERT + messageList[0] + VALUES + messageList[2]))
         {
             success = true;
         }
         else
         {
-            qDebug() << "add person failed: " << queryAdd.lastError();
+            qDebug() << "add tubel failed: " << query.lastError();
         }
     }
     else
     {
-        qDebug() << "add table failed: name cannot be empty";
+        qDebug() << "add tubel failed: message cannot be empty";
     }
-
     return success;
 }
 

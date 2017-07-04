@@ -52,35 +52,13 @@
 #include <QtCore>
 #include <QDebug>
 
-
-
 #include <stdlib.h>
 
 #include "dialog.h"
 
-
-#include <dbhandler.h>
-  // Change to any path you wish
-static const QString path = "example.db";
-
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
-    DbHandler db(path);
-
-    if (db.isOpen())
-    {
-        db.createTable("test1", "(id1, name1, kinder1, Ferhat1)");
-        db.createTable("test2", "(id2, name2, kinde2r, Ferhat2)");
-        db.createTable("test3", "(id2, name2, kinder2, Ferhat2)");
-        db.createTable("test4", "(id2, name2, kinder2, Ferhat2)");
-    }
-    else
-    {
-        qDebug() << "Database is not open!";
-    }
-
     Dialog::getInstance().show();
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     return app.exec();

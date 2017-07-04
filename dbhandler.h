@@ -46,19 +46,17 @@ public:
 
     /**
      * @brief Creates a new table if it doesn't already exist
-     * @param {QString} table - name of new table
-     * @param {QString} columns - names of new header
+     * @param {QString} message - message to create the insert query
      * @return {bool} true - table created successfully, false - table not created
      */
-    bool createTable(QString table, QString columns);
+    bool createTable(QString message);
 
     /**
      * @brief Add tubel into one of a tabels
-     * @param {QString} table - name of table
-     * @param {QString} columns - set of the values
+     * @param {QString} message - message to create the insert query
      * @return true - person added successfully, false - person not added
      */
-    bool insertTuble( const QString& table, const QString& values);
+    bool insertTuble(QString& message);
 
     /**
      * @brief Delete tubel from one of a tabels

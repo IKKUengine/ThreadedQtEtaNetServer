@@ -54,10 +54,6 @@
 
 #include <stdlib.h>
 
-#include <dbhandler.h>
-
-static const QString path = "example.db";
-
 
 EtaNetServer::EtaNetServer(QObject *parent)
     : QTcpServer(parent)
