@@ -62,12 +62,15 @@ EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject
 {
     tcpSocket->setSocketDescriptor(socketDescriptor);
     in.setDevice(tcpSocket);
-    in.setVersion(QDataStream::Qt_4_0);
+    in.setVersion(QDataStream::Qt_5_8);
     connect(this->tcpSocket, &QIODevice::readyRead, this, &EtaNetThread::read);
+    qDebug() << "pass thead construktor";
 }
 
 void EtaNetThread::run()
 {
+//the Server-Client communication need a bit time... after 10 ms you can stream the data.
+    QThread::msleep(50);
 //Ursprünglicher Dataübertragung zum Client
 //    QTcpSocket tcpSocket;
 // Descriptor -> Indexierung der Threads
@@ -86,13 +89,14 @@ void EtaNetThread::run()
 
 void  EtaNetThread::read()
 {
+    qDebug() << "read funktion: vor db is open abfrage";
     DbHandler db(path);
     in.startTransaction();
 
     QString message;
     in >> message;
-
-    if (db.isOpen())
+    int length = message.length();
+    if (db.isOpen() && length != 0)
     {
         if(!db.insertTuble(message)){
             db.createTable(message);

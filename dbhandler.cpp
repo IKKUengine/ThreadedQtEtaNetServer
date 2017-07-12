@@ -38,12 +38,25 @@ bool DbHandler::createTable(QString message)
     QSqlQuery query;
     QStringList messageList = message.split(';');
     const QString CREATETABLE = "CREATE TABLE ";
-    query.prepare(CREATETABLE + messageList[0] + messageList[1]);
+    QString header = CREATETABLE + messageList[0] + messageList[1] + ";";
+    success = query.prepare(header);
     //query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
-    if (!query.exec())
+    if (success)
     {
-        qDebug() << "Couldn't create the table: one might already exist.";
-        success = false;
+        if(!query.exec())
+        {
+            qDebug() << "Couldn't create the table: one might already exist.";
+            success = false;
+        }
+        else
+        {
+            qDebug() << "Table is created!";
+        }
+
+    }
+    else
+    {
+        qDebug() << "Couldn't prepare the query to create table: identical column names are not allowed for uniqueness!";
     }
     return success;
 }
@@ -57,7 +70,7 @@ bool DbHandler::insertTuble(QString& message)
         QStringList messageList = message.split(';');
         const QString VALUES = " VALUES ";
         const QString INSERT = "INSERT INTO ";
-        if(query.exec(INSERT + messageList[0] + VALUES + messageList[2]))
+        if(query.exec(INSERT + messageList[0] + VALUES + messageList[2] + ";"))
         {
             success = true;
         }
