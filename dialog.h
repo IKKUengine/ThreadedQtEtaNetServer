@@ -4,9 +4,13 @@
 #include <QWidget>
 #include "server.h"
 
+
 QT_BEGIN_NAMESPACE
+class QComboBox;
+class QLineEdit;
 class QLabel;
 class QPushButton;
+
 QT_END_NAMESPACE
 
 /**
@@ -56,8 +60,18 @@ private:
      */
     Dialog(const Dialog&);
 
+ //slots:
+    void networkInterface(void);
+    void setNetworkInterface(void);
+    void close(void);
+
 
 private:
+    QComboBox *hostCombo;
+    QLineEdit *portLineEdit;
+    QPushButton *setIpPortButton;
+    QLabel *hostLabel;
+    QLabel *portLabel;
     /**
      * @brief label - is used for displaying text
      */
@@ -78,6 +92,7 @@ private:
      * @brief server - creates the server instance
      */
     EtaNetServer server;
+
 };
 
 #endif
