@@ -65,7 +65,7 @@ Dialog::Dialog(QWidget *parent)
     statusLabel->setWordWrap(true);
     quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
-     QHostAddress ipAddress("192.168.178.20");
+     QHostAddress ipAddress("192.168.178.41");//("10.84.51.48");//("192.168.178.20");
     if (!server.listen(ipAddress, 50005)) {
         QMessageBox::critical(this, tr("\u03B7Net Server"),
                               tr("Unable to start the server: %1.")

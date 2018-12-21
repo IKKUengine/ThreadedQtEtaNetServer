@@ -60,53 +60,44 @@ static const QString path = "example.db";
 EtaNetThread::EtaNetThread(int socketDescriptor, const QString &fortune, QObject *parent)
     : QThread(parent), socketDescriptor(socketDescriptor), text(fortune), tcpSocket(new QTcpSocket(this))
 {
-    tcpSocket->setSocketDescriptor(socketDescriptor);
+    if (!tcpSocket->setSocketDescriptor(socketDescriptor)) {
+        emit error(tcpSocket->error());
+        return;
+    }
     in.setDevice(tcpSocket);
-    in.setVersion(QDataStream::Qt_5_8);
+    in.setVersion(QDataStream::Qt_4_0);
     connect(this->tcpSocket, &QIODevice::readyRead, this, &EtaNetThread::read);
     qDebug() << "pass thead construktor";
 }
 
 void EtaNetThread::run()
 {
-//the Server-Client communication need a bit time... after 10 ms you can stream the data.
+    qDebug() << "run fct";
     QThread::msleep(50);
-//Ursprünglicher Dataübertragung zum Client
-//    QTcpSocket tcpSocket;
-// Descriptor -> Indexierung der Threads
-//    if (!tcpSocket->setSocketDescriptor(socketDescriptor)) {
-//        emit error(tcpSocket->error());
-//        return;
-//    }
-//    QByteArray block;
-//    QDataStream out(&block, QIODevice::WriteOnly);
-//    out.setVersion(QDataStream::Qt_4_0);
-//    out << text;
-//    tcpSocket.write(block);
-//    tcpSocket.disconnectFromHost();
-//    tcpSocket.waitForDisconnected();
 }
 
 void  EtaNetThread::read()
 {
+
     qDebug() << "read funktion: vor db is open abfrage";
-    DbHandler db(path);
+    //DbHandler db(path);
     in.startTransaction();
 
     QString message;
     in >> message;
-    int length = message.length();
-    if (db.isOpen() && length != 0)
-    {
-        if(!db.insertTuble(message)){
-            db.createTable(message);
-            db.insertTuble(message);
-        }
-    }
-    else
-    {
-        qDebug() << "Database is not open!";
-    }
+    qDebug() << message;
+//    int length = message.length();
+//    if (db.isOpen() && length != 0)
+//    {
+//        if(!db.insertTuble(message)){
+//            db.createTable(message);
+//            db.insertTuble(message);
+//        }
+//    }
+//    else
+//    {
+//        qDebug() << "Database is not open!";
+//    }
 
     Dialog::getInstance().setTextLabel(message);
 
@@ -114,6 +105,18 @@ void  EtaNetThread::read()
         return;
 
 
+    //-------------------------------------------------------------------------------
+    if(tcpSocket->isWritable())
+    {
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_0);
+    out << text;
+
+    tcpSocket->write(block);
+    tcpSocket->disconnectFromHost();
+    tcpSocket->waitForDisconnected();
+    }
  //   if (nextFortune == currentFortune) {
  //       QTimer::singleShot(0, this, &Client::requestNewFortune);
  //       return;

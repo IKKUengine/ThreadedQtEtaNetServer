@@ -68,6 +68,7 @@ EtaNetServer::EtaNetServer(QObject *parent)
 
 void EtaNetServer::incomingConnection(qintptr socketDescriptor)
 {
+    qDebug() << "objekt erzeugt";
     QString fortune = fortunes.at(qrand() % fortunes.size());
     EtaNetThread *thread = new EtaNetThread(socketDescriptor, fortune, this);
     connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
