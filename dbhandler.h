@@ -45,53 +45,50 @@ public:
     bool isOpen() const;
 
     /**
-     * @brief Creates a new table if it doesn't already exist
+     * @brief Creates a new monitoring table if it doesn't already exist
      * @param {QString} message - message to create the insert query
      * @return {bool} true - table created successfully, false - table not created
      */
-    bool createTable(QString message);
+    bool createMonitoringTable(QString message);
+
+    /**
+     * @brief Creates a new controll table if it doesn't already exist
+     * @param {QString} message - message to create the insert query
+     * @return {bool} true - table created successfully, false - table not created
+     */
+    bool createControllTable(QString message);
 
     /**
      * @brief Add tubel into one of a tabels
      * @param {QString} message - message to create the insert query
      * @return true - person added successfully, false - person not added
      */
-    bool insertTuble(QString& message);
+    bool insertMonitoringTuble(QString& message);
 
     /**
-     * @brief Delete tubel from one of a tabels
-     * @param {QString} table - name of table
-     * @param {QString} columns - name of the primary Key
-     * @return true - person removed successfully, false - person not removed
+     * @brief Creation of the Controll Matrix header
+     * @return true - created successfully
      */
-    bool deleteTuble(const QString& table, const QString& primaryKey);
+    bool initControllMatrix(void);
 
     /**
-     * @brief Check if person of name "name" exists in db
-     * @param {QString} table - name of table
-     * @param {QString} columns - name of the primary Key
-     * @return true - person exists, false - person does not exist
+     * @brief Gets Controll Matrix String of one field element.
+     * @param {QString} field element name
+     * @return {QString} String of all controll parameters
      */
-    bool isTubel(const QString& table, const QString& primaryKey) const;
-
-    /**
-     * @brief Print all tubel into one of a tabels
-     * @param {QString} table - name of table
-     */
-    void printAllTubel(const QString& table) const;
-
-    /**
-     * @brief Remove all tubel into one of a tabels
-     * @param {QString} table - name of table
-     * @return {bool} true - all persons removed successfully, false - not removed
-     */
-    bool removeAllTubel(const QString& table);
+    QString selectControllValues(QString& name);
 
 private:
     /**
-     * @brief database object - represents a connection to a database.
+     * @brief database object - represents a connection to a monitoring database.
      */
     QSqlDatabase m_db;
+
+    /**
+     * @brief Create a Log-Table
+     * @return {bool} true - Log-Table creation was sucessful
+     */
+    bool log(void);
 };
 
 #endif // DBHANDLER_H

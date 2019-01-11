@@ -3,17 +3,14 @@ QT += network widgets
 QT += core sql
 
 HEADERS       = dialog.h \
-                fortuneserver.h \
-                fortunethread.h \
-                dbhandler.h
+                dbhandler.h \
+                server.h \
+                clientthread.h
 SOURCES       = dialog.cpp \
-                fortuneserver.cpp \
-                fortunethread.cpp \
                 dbhandler.cpp \
-                main.cpp
+                main.cpp \
+                server.cpp \
+                clientthread.cpp
 
-# install
-#target.path = E:\Softwareprojekte\etaNet\EtaNetManagement
-#INSTALLS += target
 
 

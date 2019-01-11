@@ -9,7 +9,7 @@ DbHandler::DbHandler(const QString &path)
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName(path);
 
-    if (!m_db.open())
+    if(!m_db.open())
     {
         qDebug() << "Error: connection with database fail";
     }
@@ -24,23 +24,29 @@ DbHandler::~DbHandler()
     if (m_db.isOpen())
     {
         m_db.close();
+
     }
 }
 
 bool DbHandler::isOpen() const
 {
-    return m_db.isOpen();
+    return this->m_db.isOpen();
 }
 
-bool DbHandler::createTable(QString message)
+
+
+bool DbHandler::createControllTable(QString message)
 {
     bool success = false;
+    const QString VALUES = " VALUES ";
+    const QString INSERT = "INSERT INTO ";
     QSqlQuery query;
-    QStringList messageList = message.split(';');
-    const QString CREATETABLE = "CREATE TABLE ";
-    QString header = CREATETABLE + messageList[0] + messageList[1] + ";";
-    success = query.prepare(header);
-    //query.prepare("CREATE TABLE people(id INTEGER PRIMARY KEY, name TEXT);");
+    QStringList messageList2 = message.split(" (");
+    initControllMatrix();
+    QString cmatrix = INSERT + "'ControlMatrix' ('Object Name',  'Activity (on / off)', 'Prioritization', 'El. Power Limitation',  "
+                                   "'Th. Power Limitation', 'Release Time', 'Operating Mode')" +
+                                   VALUES + "(" + messageList2[0] + ", 'None', 'None', 'None', 'None', 'None', 'None')" + ";";
+    success = query.prepare(cmatrix);
     if (success)
     {
         if(!query.exec())
@@ -61,16 +67,44 @@ bool DbHandler::createTable(QString message)
     return success;
 }
 
-bool DbHandler::insertTuble(QString& message)
+bool DbHandler::createMonitoringTable(QString message)
 {
     bool success = false;
-    if (!message.isEmpty())
+    const QString CREATETABLE = "CREATE TABLE IF NOT EXISTS ";
+    const QString VALUES = " VALUES ";
+    QSqlQuery query;
+    QStringList messageList = message.split(VALUES);
+
+    QString header = CREATETABLE + messageList[0] + ";";
+    success = query.prepare(header);
+    if (success)
     {
-        QSqlQuery query;
-        QStringList messageList = message.split(';');
-        const QString VALUES = " VALUES ";
+        if(!query.exec())
+        {
+            qDebug() << "Couldn't create the table: one might already exist.";
+            success = false;
+        }
+        else
+        {
+            qDebug() << "Table is created (Monitoring)!";
+        }
+
+    }
+    else
+    {
+        qDebug() << "Couldn't prepare the query to create table: identical column names are not allowed for uniqueness!";
+    }
+    return success;
+}
+
+bool DbHandler::insertMonitoringTuble(QString& message)
+{
+    bool success = false;
+    QSqlQuery query;
+    if (!message.isEmpty() && !query.isActive())
+    {
         const QString INSERT = "INSERT INTO ";
-        if(query.exec(INSERT + messageList[0] + VALUES + messageList[2] + ";"))
+        if(query.exec(INSERT + message + ";"))
         {
             success = true;
         }
@@ -86,80 +120,87 @@ bool DbHandler::insertTuble(QString& message)
     return success;
 }
 
-bool DbHandler::deleteTuble(const QString& table, const QString& primaryKey)
-{
+
+bool DbHandler::log(){
+    /*
+    BEGIN IMMEDIATE;   -- wrap initial work in a single transaction
+    -- Example Log Table
+    CREATE TABLE IF NOT EXISTS Log ('Time', 'Text');
+    -- Example Trigger to autogenerate datetime
+    DROP TRIGGER IF EXISTS insert_Timer;
+    CREATE TRIGGER IF NOT EXISTS insert_Timer AFTER  INSERT ON Log
+         BEGIN
+          UPDATE Log SET Time = strftime('%Y-%m-%dT%H:%M:%fZ','now')  WHERE rowid = new.rowid;
+    -- Note: using full ISO8601 timestamp format
+         END;
+    INSERT INTO Log (Text) VALUES ('Data Logging Started');
+    SELECT Count(*) FROM Log;    -- count of log entries
+    COMMIT;
+    */
     bool success = false;
-
-//    if (personExists(name))
-//    {
-//        QSqlQuery queryDelete;
-//        queryDelete.prepare("DELETE FROM people WHERE name = (:name)");
-//        queryDelete.bindValue(":name", name);
-//        success = queryDelete.exec();
-
-//        if(!success)
-//        {
-//            qDebug() << "remove person failed: " << queryDelete.lastError();
-//        }
-//    }
-//    else
-//    {
-//        qDebug() << "remove person failed: person doesnt exist";
-//    }
-
-    return success;
-}
-
-bool DbHandler::isTubel(const QString& table, const QString& primaryKey) const
-{
-    bool exists = false;
-
-//    QSqlQuery checkQuery;
-//    checkQuery.prepare("SELECT name FROM people WHERE name = (:name)");
-//    checkQuery.bindValue(":name", name);
-
-//    if (checkQuery.exec())
-//    {
-//        if (checkQuery.next())
-//        {
-//            exists = true;
-//        }
-//    }
-//    else
-//    {
-//        qDebug() << "person exists failed: " << checkQuery.lastError();
-//    }
-
-    return exists;
-}
-
-void DbHandler::printAllTubel(const QString& table) const
-{
-    qDebug() << "Persons in db:";
-    QSqlQuery query("SELECT * FROM people");
-    int idName = query.record().indexOf("name");
-    while (query.next())
-    {
-        QString name = query.value(idName).toString();
-        qDebug() << "===" << name;
-    }
-}
-
-bool DbHandler::removeAllTubel(const QString& table)
-{
-    bool success = false;
-
-    QSqlQuery removeQuery;
-    removeQuery.prepare("DELETE FROM people");
-
-    if (removeQuery.exec())
+    QSqlQuery query;
+    if(query.exec("BEGIN IMMEDIATE;"
+                   "CREATE TABLE IF NOT EXISTS Log ('Time', 'Text');"
+                   "DROP TRIGGER IF EXISTS insert_Timer;"
+                   "CREATE TRIGGER IF NOT EXISTS insert_Timer AFTER  INSERT ON Log BEGIN UPDATE Log SET Time = strftime('%Y-%m-%dT%H:%M:%fZ','now')  WHERE rowid = new.rowid;"
+                   "END;"
+                   "INSERT INTO Log (Text) VALUES ('Server was started or used');"
+                   "SELECT Count(*) FROM Log;"
+                   "COMMIT;"))
     {
         success = true;
     }
     else
     {
-        qDebug() << "remove all persons failed: " << removeQuery.lastError();
+        qDebug() << "Cration Log-Table failed: " << query.lastError();
     }
-
     return success;
+
+}
+
+bool DbHandler::initControllMatrix(void)
+{
+    bool success = false;
+    QSqlQuery query;
+    const QString CREATETABLE = "CREATE TABLE IF NOT EXISTS ";
+    QString header = CREATETABLE + "'ControlMatrix' ('Object Name' PRIMARY KEY, 'Activity (on / off)', "
+                                   "'Prioritization', 'El. Power Limitation',  'Th. Power Limitation', "
+                                   "'Release Time', 'Operating Mode')" + ";";
+    success = query.prepare(header);
+    if (success)
+    {
+        if(!query.exec())
+        {
+            qDebug() << "Couldn't create the table: one might already exist.";
+            success = false;
+        }
+        else
+        {
+            qDebug() << "Table is created (Init)!";
+        }
+
+    }
+    else
+    {
+        qDebug() << "Couldn't prepare the query to create table: identical column names are not allowed for uniqueness!";
+    }
+    return success;
+}
+
+QString DbHandler::selectControllValues(QString& name)
+{
+    QString value = " ; ; ; ; ; ";
+       QSqlQuery query;
+       if(query.exec("SELECT * FROM 'ControlMatrix' WHERE 'ControlMatrix'.'Object Name' = " + name + ";"))
+       {
+           query.next();
+           value =  query.value(1).toString()+ "; ";
+           value = value + query.value(2).toString()+ "; ";
+           value = value + query.value(3).toString()+ "; ";
+           value = value + query.value(4).toString()+ "; ";
+           value = value + query.value(5).toString()+ "; ";
+           value = value + query.value(6).toString();
+        }
+       qDebug() << value;
+    return value;
 }
