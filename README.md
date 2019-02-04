@@ -51,6 +51,7 @@ From server to client:
 * 'F6': Wrong messages from client. Data structure does not correspond to the protocol.
 * 'F7': Database is not open or server can not open. 
 * 'F8': Server gets no messages or message is empty 
+
 From client to server:
 * 'E5': Query whether control parameters are still current, if no send me the current record.
 
@@ -60,7 +61,7 @@ From client to server:
 * SQLite is used here for the database. The SQLite library can be integrated directly into corresponding applications so that no additional server software is required. Here the SQLite library for LabVIEW by Dr. James Powell was used. [Here you can download and install it](http://sine.ni.com/nips/cds/view/p/lang/de/nid/212894). 
 
 
-## Deployment and Starting Demo Energy System
+## Deployment and Starting ηNet Server
 If so far everything is installed, then open a terminal and clone this repro:
 
 ```
@@ -79,7 +80,10 @@ Only the two VIs are relevant for the start of the demo energy system:
 Start first Virtual-TimeSimulated_EnergySystem.vi and then EnergyMonitoring.vi. 
 The system is programmed so that the corresponding database and its structure is created automatically at startup. An insight into the database allows the EnergyMonitoring.vi. You can also use the [DB Browser for SQLite](https://sqlitebrowser.org/).
 
-## OOP-oriented Programming Paradigm of the Management
+
+**ηNet Management**
+OOP-oriented Programming Paradigm of the Management:
+
 The control interface of the CPOs is summarized as a table (control matrix) in the database. If one of the parameters changes, this has a direct influence on the CPOs and therefore on the system itself.  
 
 For example, self-organizing algorithms can use this control matrix:
@@ -88,16 +92,13 @@ For example, self-organizing algorithms can use this control matrix:
 * to save carbon dioxide, emission-free producers can be prisorized higher.
 * etc.  
 
-**Management Interface**
-
-Start EnergyControlling.vi. On the surface of EnergyControlling.vi you can directly change the management parameters in the table and look at the result in Virtual-TimeSimulated_EnergySystem.vi and EnergyMonitoring.vi. Just try it out. In Folder \SimulatedCPSLabVIEWEnergySystem\management there are some Demo-VIs but with no content yet. Currently the demo versions of management algorithms are under development and will follow soon...
+ Currently the demo versions of management algorithms are under development and will follow soon...
 
 ## System and Software Engineer, Project Supervisor and Author
 Ferhat Aslan
-## Project Collaboration and Software Engineer
-Furqan Abbasi
 
 ## License
+The Threaded Fortune Server Example from the Qt Network was used as inspiration.
 This project is licensed under MIT - see the [LICENSE](LICENSE.md) file for details
 
 
