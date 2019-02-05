@@ -53,35 +53,27 @@ From server to client:
 * 'F8': Server gets no messages or message is empty 
 
 From client to server:
-* 'E5': Query whether control parameters are still current, if no send me the current record.
-
+* 'E5': Query whether the control parameters are still current, if not, the server sends the current data.
 
 ## Prerequisites
-* To use the software, NI LabVIEW version 2017 or later is required. LabVIEW is a development environment and is for any measurement or control system. If you don't have a license for the development environment, you can use the evaluating version for now. [You can download it here](http://www.ni.com/de-de/shop/labview.html). 
-* SQLite is used here for the database. The SQLite library can be integrated directly into corresponding applications so that no additional server software is required. Here the SQLite library for LabVIEW by Dr. James Powell was used. [Here you can download and install it](http://sine.ni.com/nips/cds/view/p/lang/de/nid/212894). 
-
+For this project the toolkit with the Qt Creater 4.2.2 and Qt 5.8 MinGW 32 bit was used.
+For beginners I recommend to lern more: [Getting started](http://doc.qt.io/qt-5/gettingstarted.html)
 
 ## Deployment and Starting ηNet Server
-If so far everything is installed, then open a terminal and clone this repro:
+Currently only one executable file for Windows version higher than 7 is offered for download: 
+* Download the zip file
+* Unzip it
+* Change to the desired IT network on your computer. The server automatically recognizes the assigned address and sets the port (50005).  
+* Start (klick on) .exe file
 
-```
-cd ~
-git clone https://github.com/IKKUengine/SimulatedCPSLabVIEWEnergySystem.git
-cd SimulatedCPSLabVIEWEnergySystem
-```
+## Instructions for Use ηNet Server
+When the server is started, you can see the assigned IP and port. The database is automatically created in the background. To browse the database, the ["DB Browser for SQLite"](https://sqlitebrowser.org/) is recommended.
+The server is programmed in such a way that it does not have to be in any special order for the connections with the client. As long as the clients adhere to the ηNet - Communication Protocol, everything should work as desired. But because the server is still under development (V0.9.0), bugs may occur. In such cases please contact us, so we can fix it right away. 
 
-or download [it](https://github.com/IKKUengine/SimulatedCPSLabVIEWEnergySystem/archive/master.zip) to your home directory and open the folder. 
-
-Look for a file with the extension .lvproj and double-click it. 
-Only the two VIs are relevant for the start of the demo energy system:
-* Virtual-TimeSimulated_EnergySystem.vi
-* EnergyMonitoring.vi
-
-Start first Virtual-TimeSimulated_EnergySystem.vi and then EnergyMonitoring.vi. 
-The system is programmed so that the corresponding database and its structure is created automatically at startup. An insight into the database allows the EnergyMonitoring.vi. You can also use the [DB Browser for SQLite](https://sqlitebrowser.org/).
+<img src="images/etaNetThreadedServer_desktop.png" width=70%>
 
 
-**ηNet Management**
+## ηNet Management
 OOP-oriented Programming Paradigm of the Management:
 
 The control interface of the CPOs is summarized as a table (control matrix) in the database. If one of the parameters changes, this has a direct influence on the CPOs and therefore on the system itself.  
