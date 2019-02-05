@@ -1,5 +1,5 @@
 # ThreadedQtEtaNetServer
-C++/Qt 5.8 - Threaded Server that gets Messages and writes into SQLite DB 
+C++/Qt 5.8 - Threaded server that retrieves messages, writes them to SQLite DB, and returns the control parameters as feedback.
 
 # Threaded ηNet Server - Networking of Cyber-Physical Objects (OPS) to Managing Energy Systems
 
