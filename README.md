@@ -75,15 +75,13 @@ Currently only one executable file for Windows version higher than 7 is offered 
 * Download the zip file
 * Unzip it
 * Change to the desired IT network on your computer. The server automatically recognizes the assigned address and sets the port (50005).  
-* Start (klick on) .exe file
+* Start (klick on) etaNetServer.exe file
 
 ## Instructions for Use ηNet Server
-When the server is started, you can see the assigned IP and port. The database is automatically created in the background. To browse the database, the ["DB Browser for SQLite"](https://sqlitebrowser.org/) is recommended.
+When the server is started, you can see the assigned IP and port. The database is automatically created in the background in the same directory as the exe file. To browse the database, the ["DB Browser for SQLite"](https://sqlitebrowser.org/) is recommended.
 The server is programmed in such a way that it does not have to be in any special order for the connections with the client. As long as the clients adhere to the ηNet - Communication Protocol, everything should work as desired. But because the server is still under development (V0.9.0), bugs may occur. In such cases please contact us, so we can fix it right away. 
 
 <img src="images/etaNetThreadedServer_desktop.png" width=30%>
-
-
 
 ## System and Software Engineer, Project Supervisor and Author
 Ferhat Aslan
