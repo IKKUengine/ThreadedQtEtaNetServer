@@ -50,6 +50,11 @@ The control data has the same data structure for each client. I.e. the headers i
 ```
 "'ControlMatrix' ('Object Name',  'Activity (on / off)', 'Prioritization', 'El. Power Limitation', 'Th. Power Limitation', 'Release Time', 'Operating Mode') VALUES ('Name of Client', 'None', 'None', 'None', 'None', 'None', 'None')";
 ```
+
+Example:
+```
+"'CHP- SenerTec Dachs G5.52' ('Time Stamp - Heat Meter 1', 'Th. Power [W] - Heat Meter 1', 'Water Flow [m^3/h] - Heat Meter 1', 'T_Flow [°C] - Heat Meter 1', 'T_Return [°C] - Heat Meter 1', 'Time Stamp - Heat Meter 2', 'Th. Power [W] - Heat Meter 2', 'Water Flow [m^3/h] - Heat Meter 2', 'T_Flow [°C] - Heat Meter 2', 'T_Return [°C] - Heat Meter 2') VALUES ('2018-12-22 14:09:36', 12000.2, 12.1258, 22.14, 22.44, '2018-12-11 14:09:36', 12000.1, 11.1258, 21.14, 21.44)";
+```
 For all control parameters of the clients only one table is stored in the database and automatically created at the beginning when the first message is received. 
 ```
 In the above case, the client receives:
@@ -72,10 +77,10 @@ For beginners I recommend to lern more: [Getting started](http://doc.qt.io/qt-5/
 
 ## Deployment and Starting ηNet Server
 Currently only one executable file for Windows version higher than 7 is offered for download: 
-* Download the zip file
+* [Download the zip file](bin/EtaNetServerV0_9_0.zip)
 * Unzip it
 * Change to the desired IT network on your computer. The server automatically recognizes the assigned address and sets the port (50005).  
-* Start (klick on) etaNetServer.exe file
+* Start (klick on) .exe file
 
 ## Instructions for Use ηNet Server
 When the server is started, you can see the assigned IP and port. The database is automatically created in the background in the same directory as the exe file. To browse the database, the ["DB Browser for SQLite"](https://sqlitebrowser.org/) is recommended.
