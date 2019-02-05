@@ -189,7 +189,7 @@ void Client::requestNewFortune()
                              portLineEdit->text().toInt());
     if(tcpSocket->isWritable())
     {
-        QString text = QString("Ferhat Aslan");
+        QString text = QString("'NameOfClient' ( 'DBHeader 1', 'DBHeader 2','DBHeader 3') VALUES (1.3, 2.2, 3.1)");
         QByteArray block;
         QDataStream out(&block, QIODevice::WriteOnly);
         out.setVersion(QDataStream::Qt_5_8);

@@ -4,12 +4,14 @@
 #include <QSqlRecord>
 #include <QDebug>
 
-DbHandler::DbHandler(const QString &path)
+DbHandler::DbHandler()
 {
+    QString path = "etaNet.db";
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     m_db.setDatabaseName(path);
+    m_db.open();
 
-    if(!m_db.open())
+    if(!m_db.isOpen())
     {
         qDebug() << "Error: connection with database fail";
     }

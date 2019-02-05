@@ -5,13 +5,12 @@
 
 #include <dbhandler.h>
 
-static const QString path = "etaNet.db";
 
 static QString oldValue;
 
 
 EtaNetThread::EtaNetThread(int socketDescriptor, QObject *parent)
-    : QThread(parent), socketDescriptor(socketDescriptor), tcpSocket(new QTcpSocket(this))
+    : QThread(parent), tcpSocket(new QTcpSocket(this)), socketDescriptor(socketDescriptor)
 {
     if (!tcpSocket->setSocketDescriptor(socketDescriptor)) {
         emit error(tcpSocket->error());
@@ -25,14 +24,15 @@ EtaNetThread::EtaNetThread(int socketDescriptor, QObject *parent)
 
 void EtaNetThread::run()
 {
-    qDebug() << "run fct";
+
     QThread::msleep(50);
+    qDebug() << "run fct";
 }
 
 void  EtaNetThread::read()
 {
     qDebug() << "read funktion: vor db is open abfrage";
-    DbHandler db(path);
+    DbHandler db;
     in.startTransaction();
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -41,13 +41,15 @@ void  EtaNetThread::read()
     QString feedback;
     in >> message;
     int length = message.length();
-    if(length != 0){
+    if(length != 0)
+    {
         bool y,z,w ;
         y = message[0] == 'E';
         z = message[1] == '5';
         w = message.length() == 2;
         QStringList messageList = message.split(" (");
-        if (!(y && z && w)){
+        if (!(y && z && w))
+        {
             if (db.isOpen())
             {
                 QString text = "Message received from " + messageList[0];

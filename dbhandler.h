@@ -29,7 +29,7 @@ public:
      * Constructor sets up connection with db and opens it
      * @param {const QString&} path - absolute path to db file
      */
-    DbHandler(const QString& path);
+    DbHandler();
 
     /**
      * @brief Destructor
