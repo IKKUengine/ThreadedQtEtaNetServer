@@ -116,6 +116,7 @@ void  EtaNetThread::read()
     if(tcpSocket->isWritable())
     {
         out << feedback;
+        qDebug() << feedback;
         tcpSocket->write(block);
         tcpSocket->disconnectFromHost();
         tcpSocket->waitForDisconnected();

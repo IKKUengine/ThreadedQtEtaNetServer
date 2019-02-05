@@ -58,7 +58,7 @@ Dialog::Dialog(QWidget *parent)
     mainLayout->addWidget(messageLabel);
     mainLayout->addLayout(buttonLayout);
     setLayout(mainLayout);
-    setWindowTitle(tr("\u03B7Net Management"));
+    setWindowTitle(tr("\u03B7Net Server"));
 }
 
 Dialog& Dialog::getInstance()
