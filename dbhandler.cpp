@@ -3,6 +3,7 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QDebug>
+#include "dialog.h"
 
 DbHandler::DbHandler()
 {
@@ -99,12 +100,64 @@ bool DbHandler::createMonitoringTable(QString message)
     return success;
 }
 
+
 bool DbHandler::insertMonitoringTuble(QString& message)
 {
     bool success = false;
     QSqlQuery query;
     if (!message.isEmpty() && !query.isActive())
     {
+        const QString INSERT = "INSERT INTO ";
+        if(query.exec(INSERT + message + ";"))
+        {
+            success = true;
+        }
+        else
+        {
+            qDebug() << "add tubel failed: " << query.lastError();
+        }
+    }
+    else
+    {
+        qDebug() << "add tubel failed: message cannot be empty";
+    }
+    return success;
+}
+
+
+bool DbHandler::updateLastMonitoringTuble(QString& message)
+{
+    //DELETE FROM NameOfClient WHERE rowid = (SELECT MAX(rowid) FROM NameOfClient);
+    //INSERT INTO NameOfClient ( 'DBHeader 1', 'DBHeader 2', 'DBHeader 3') VALUES (125, 369, 1233)
+    bool success = false;
+    const QString header = "'";
+    QStringList messageList = message.split(header);
+     qDebug() << "splitted header: " << messageList[1];
+    QSqlQuery query;
+    QString value;
+    if (!message.isEmpty() && !query.isActive())
+    {
+        if(query.exec("SELECT MAX(rowid) FROM " + messageList[1] + ";"))
+        {
+                query.next();
+
+                value = query.value(0).toString();
+
+            qDebug() << "max rowid: " << value;
+            if (value >= 0)
+            {
+                const QString DELETE = "DELETE FROM ";
+                if(query.exec(DELETE + messageList[1] + " WHERE rowid = (SELECT MAX(rowid) FROM " + messageList[1] + ");"))
+                {
+                    success = true;
+                }
+                else
+                {
+                    qDebug() << "add tubel failed: " << query.lastError();
+                }
+            }
+        }
+
         const QString INSERT = "INSERT INTO ";
         if(query.exec(INSERT + message + ";"))
         {

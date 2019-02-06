@@ -2,7 +2,7 @@ QT += network widgets
 
 QT += core sql
 
-TARGET = EtaNetServerV0_9_0
+TARGET = EtaNetServerV0_9_1
 
 HEADERS       = dialog.h \
                 dbhandler.h \

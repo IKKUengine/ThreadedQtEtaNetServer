@@ -62,8 +62,15 @@ public:
      * @brief Add tubel into one of a tabels
      * @param {QString} message - message to create the insert query
      * @return true - person added successfully, false - person not added
-     */
+     */ 
     bool insertMonitoringTuble(QString& message);
+
+    /**
+     * @brief Replace tubel into one of a tabels
+     * @param {QString} message - message to create the replace query
+     * @return true - person added successfully, false - person not added
+     */
+    bool updateLastMonitoringTuble(QString& message);
 
     /**
      * @brief Creation of the Controll Matrix header

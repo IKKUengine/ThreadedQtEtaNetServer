@@ -15,6 +15,9 @@ Dialog::Dialog(QWidget *parent)
     statusLabel->setWordWrap(true);
     quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
+    dqButton = new QPushButton(tr("Save Data"));
+    dqButton->setAutoDefault(false);
+    dqButton->setCheckable(true);
 
     QString ipAddress;
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
@@ -50,6 +53,7 @@ Dialog::Dialog(QWidget *parent)
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
+    buttonLayout->addWidget(dqButton);
     buttonLayout->addWidget(quitButton);
     buttonLayout->addStretch(1);
 
@@ -72,3 +76,7 @@ void  Dialog::setTextLabel(QString text)
     messageLabel->setText(text);
 }
 
+bool  Dialog::getDQButtonState(void)
+{
+   return dqButton->isChecked();
+}

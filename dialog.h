@@ -33,6 +33,12 @@ public:
      *
      */
     void setTextLabel(QString text);
+    /**
+     * @brief Gets DQ Button state
+     * @return Bool: True is pushed
+     *
+     */
+    bool getDQButtonState(void);
 
 private:
     /**
@@ -64,6 +70,10 @@ private:
      * @brief button - is used for close the dialog window
      */
     QPushButton *quitButton;
+    /**
+     * @brief button - is used for start and stop of data acquisition
+     */
+    QPushButton *dqButton;
     /**
      * @brief server - creates the server instance
      */

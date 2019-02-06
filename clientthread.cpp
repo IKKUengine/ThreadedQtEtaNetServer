@@ -56,25 +56,51 @@ void  EtaNetThread::read()
                 qDebug() <<  messageList[0];
                 Dialog::getInstance().setTextLabel(text);
                 db.createControllTable(message);
-                if(db.createMonitoringTable(message)){
-                    db.insertMonitoringTuble(message);
-                    QString value = db.selectControllValues(messageList[0]);
-                    if (value == oldValue)
-                    {
-                        feedback = "E5";
+                if(Dialog::getInstance().getDQButtonState())
+                {
+                    if(db.createMonitoringTable(message)){
+                        db.insertMonitoringTuble(message);
+                        QString value = db.selectControllValues(messageList[0]);
+                        if (value == oldValue)
+                        {
+                            feedback = "E5";
+                        }
+                        else
+                        {
+                            feedback = value;
+                            oldValue = value;
+                            Dialog::getInstance().setTextLabel("\u03B7Net server is configuring...");
+                        }
                     }
                     else
                     {
-                        feedback = value;
-                        oldValue = value;
-                        Dialog::getInstance().setTextLabel("\u03B7Net server is configuring ...");
+                        Dialog::getInstance().setTextLabel("Wrong messages from " + messageList[0]);
+                        feedback = "F6";
                     }
                 }
                 else
                 {
-                    Dialog::getInstance().setTextLabel("Wrong messages from " + messageList[0]);
-                    feedback = "F6";
+                    if(db.createMonitoringTable(message)){
+                        db.updateLastMonitoringTuble(message);
+                        QString value = db.selectControllValues(messageList[0]);
+                        if (value == oldValue)
+                        {
+                            feedback = "E5";
+                        }
+                        else
+                        {
+                            feedback = value;
+                            oldValue = value;
+                            Dialog::getInstance().setTextLabel("\u03B7Net server responds...");
+                        }
+                    }
+                    else
+                    {
+                        Dialog::getInstance().setTextLabel("Wrong messages from " + messageList[0]);
+                        feedback = "F6";
+                    }
                 }
+
             }
             else
             {
@@ -96,7 +122,7 @@ void  EtaNetThread::read()
                  {
                      feedback = value;
                      oldValue = value;
-                     Dialog::getInstance().setTextLabel("\u03B7Net server is configuring ...");
+                     Dialog::getInstance().setTextLabel("\u03B7Net server is configuring...");
                  }
              }
              else
