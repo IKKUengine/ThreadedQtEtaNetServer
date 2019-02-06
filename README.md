@@ -78,7 +78,7 @@ For beginners I recommend to lern more: [Getting started](http://doc.qt.io/qt-5/
 
 ## Deployment and Starting ηNet Server
 Currently only one executable file for Windows version higher than 7 is offered for download: 
-* [Download the zip file](bin/EtaNetServerV0_9_1.zip)
+* [Download the zip file](bin/EtaNetServerV0_9_2.zip)
 * Unzip it
 * Change to the desired IT network on your computer. The server automatically recognizes the assigned address and sets the port (50005).  
 * Start (klick on) .exe file
