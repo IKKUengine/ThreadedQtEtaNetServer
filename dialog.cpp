@@ -78,5 +78,6 @@ void  Dialog::setTextLabel(QString text)
 
 bool  Dialog::getDQButtonState(void)
 {
+   qDebug() << "ButtonState: " << dqButton->isChecked();
    return dqButton->isChecked();
 }

@@ -56,6 +56,7 @@ void  EtaNetThread::read()
                 qDebug() <<  messageList[0];
                 Dialog::getInstance().setTextLabel(text);
                 db.createControllTable(message);
+
                 if(Dialog::getInstance().getDQButtonState())
                 {
                     if(db.createMonitoringTable(message)){
@@ -80,6 +81,7 @@ void  EtaNetThread::read()
                 }
                 else
                 {
+                    qDebug() << "Meauerment stops";
                     if(db.createMonitoringTable(message)){
                         db.updateLastMonitoringTuble(message);
                         QString value = db.selectControllValues(messageList[0]);

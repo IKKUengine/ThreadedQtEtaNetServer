@@ -134,38 +134,42 @@ bool DbHandler::updateLastMonitoringTuble(QString& message)
     QStringList messageList = message.split(header);
      qDebug() << "splitted header: " << messageList[1];
     QSqlQuery query;
-    QString value;
+    int value;
     if (!message.isEmpty() && !query.isActive())
     {
-        if(query.exec("SELECT MAX(rowid) FROM " + messageList[1] + ";"))
+        if(query.exec("SELECT MAX(rowid) FROM '" + messageList[1] + "';"))
         {
-                query.next();
-
-                value = query.value(0).toString();
-
+            query.next();
+            value = query.value(0).toInt();
             qDebug() << "max rowid: " << value;
-            if (value >= 0)
+            if (value > 0)
             {
-                const QString DELETE = "DELETE FROM ";
-                if(query.exec(DELETE + messageList[1] + " WHERE rowid = (SELECT MAX(rowid) FROM " + messageList[1] + ");"))
+                const QString DELETE = "DELETE FROM '";
+                if(query.exec(DELETE + messageList[1] + "' WHERE rowid = (SELECT MAX(rowid) FROM '" + messageList[1] + "');"))
                 {
                     success = true;
                 }
                 else
                 {
                     qDebug() << "add tubel failed: " << query.lastError();
+                    success = false;
                 }
             }
-        }
-
-        const QString INSERT = "INSERT INTO ";
-        if(query.exec(INSERT + message + ";"))
-        {
-            success = true;
+            const QString INSERT = "INSERT INTO ";
+            if(query.exec(INSERT + message + ";"))
+            {
+                success = true;
+            }
+            else
+            {
+                qDebug() << "add tubel failed: " << query.lastError();
+                success = false;
+            }
         }
         else
         {
             qDebug() << "add tubel failed: " << query.lastError();
+            success = false;
         }
     }
     else
