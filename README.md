@@ -44,6 +44,11 @@ The clients can send a message at any time. No message is lost, because the serv
 "'NameOfClient' ( 'DBHeader 1', 'DBHeader 2', ..., 'DBHeader n') VALUES (value 1, value 2, ..., value n)"
 If one of the values is a string then it should be quoted ( 'value 1' ).
 ```
+
+Example:
+```
+"'CHP- SenerTec Dachs G5.52' ('Time Stamp - Heat Meter 1', 'Th. Power [W] - Heat Meter 1', 'Water Flow [m^3/h] - Heat Meter 1', 'T_Flow [°C] - Heat Meter 1', 'T_Return [°C] - Heat Meter 1', 'Time Stamp - Heat Meter 2', 'Th. Power [W] - Heat Meter 2', 'Water Flow [m^3/h] - Heat Meter 2', 'T_Flow [°C] - Heat Meter 2', 'T_Return [°C] - Heat Meter 2') VALUES ('2018-12-22 14:09:36', 12000.2, 12.1258, 22.14, 22.44, '2018-12-11 14:09:36', 12000.1, 11.1258, 21.14, 21.44)";
+```
 ### Data structure the client expects from the server:
 When the client sends measurement data or an 'E5', the server first checks whether any of the control data has changed. If none of the data has changed compared to the last call, the server sends back an 'E5' immediately afterwards. However, if one of the control data in the database has changed, the server returns the current set of control data from the client. 
 The control data has the same data structure for each client. I.e. the headers in the database are the same for each client. While the client always sends the headers together with the measurement data, the server only sends an array of values to the client.
@@ -51,10 +56,6 @@ The control data has the same data structure for each client. I.e. the headers i
 "'ControlMatrix' ('Object Name',  'Activity (on / off)', 'Prioritization', 'El. Power Limitation', 'Th. Power Limitation', 'Release Time', 'Operating Mode') VALUES ('Name of Client', 'None', 'None', 'None', 'None', 'None', 'None')";
 ```
 
-Example:
-```
-"'CHP- SenerTec Dachs G5.52' ('Time Stamp - Heat Meter 1', 'Th. Power [W] - Heat Meter 1', 'Water Flow [m^3/h] - Heat Meter 1', 'T_Flow [°C] - Heat Meter 1', 'T_Return [°C] - Heat Meter 1', 'Time Stamp - Heat Meter 2', 'Th. Power [W] - Heat Meter 2', 'Water Flow [m^3/h] - Heat Meter 2', 'T_Flow [°C] - Heat Meter 2', 'T_Return [°C] - Heat Meter 2') VALUES ('2018-12-22 14:09:36', 12000.2, 12.1258, 22.14, 22.44, '2018-12-11 14:09:36', 12000.1, 11.1258, 21.14, 21.44)";
-```
 For all control parameters of the clients only one table is stored in the database and automatically created at the beginning when the first message is received. 
 ```
 In the above case, the client receives:
@@ -81,10 +82,11 @@ Currently only one executable file for Windows version higher than 7 is offered 
 * Unzip it
 * Change to the desired IT network on your computer. The server automatically recognizes the assigned address and sets the port (50005).  
 * Start (klick on) .exe file
+* If every received set of measurement data from all connected clients is to be stored in the database, then press "Save data". If the button is not pressed, only the current measurement data for each connected client will be stored in the database. If a new file is received, the old one will be overwritten. 
 
 ## Instructions for Use ηNet Server
 When the server is started, you can see the assigned IP and port. The database is automatically created in the background in the same directory as the exe file. To browse the database, the ["DB Browser for SQLite"](https://sqlitebrowser.org/) is recommended.
-The server is programmed in such a way that it does not have to be in any special order for the connections with the client. As long as the clients adhere to the ηNet - Communication Protocol, everything should work as desired. But because the server is still under development (V0.9.0), bugs may occur. In such cases please contact us, so we can fix it right away. 
+The server is programmed in such a way that it does not have to be in any special order for the connections with the client. As long as the clients adhere to the ηNet - Communication Protocol, everything should work as desired. But because the server is still under development (V0.9.1), bugs may occur. In such cases please contact us, so we can fix it right away. 
 
 <img src="images/etaNetThreadedServer_desktop.png" width=30%>
 
