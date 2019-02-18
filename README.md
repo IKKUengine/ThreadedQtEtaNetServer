@@ -71,6 +71,7 @@ From server to client:
 
 From client to server:
 * 'E5': Query whether the control parameters are still current, if not, the server sends the current data.
+* Not yet implemented ('E6': Transmits current control parameters.)
 
 ## Prerequisites
 For this project the toolkit with the Qt Creater 4.2.2 and Qt 5.8 MinGW 32 bit was used.
