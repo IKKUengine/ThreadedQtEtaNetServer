@@ -48,8 +48,10 @@ bool DbHandler::createControllTable(QString message)
     initControllMatrix();
     QString cmatrix = INSERT + "'ControlMatrix' ('Object Name',  'Activity (on / off)', 'Prioritization', 'El. Power Limitation',  "
                                    "'Th. Power Limitation', 'Release Time', 'Operating Mode')" +
-                                   VALUES + "(" + messageList2[0] + ", 'None', 'None', 'None', 'None', 'None', 'None')" + ";";
+                                   VALUES + "(" + messageList2[0] + ", '0', '0', '0', '0', '0', '0')" + ";";
+
     success = query.prepare(cmatrix);
+
     if (success)
     {
         if(!query.exec())
@@ -61,7 +63,6 @@ bool DbHandler::createControllTable(QString message)
         {
             qDebug() << "Table is created!";
         }
-
     }
     else
     {
@@ -108,6 +109,7 @@ bool DbHandler::insertMonitoringTuble(QString& message)
     if (!message.isEmpty() && !query.isActive())
     {
         const QString INSERT = "INSERT INTO ";
+        query.exec("SAVEPOINT SavepointQt1;");
         if(query.exec(INSERT + message + ";"))
         {
             success = true;
@@ -116,6 +118,7 @@ bool DbHandler::insertMonitoringTuble(QString& message)
         {
             qDebug() << "add tubel failed: " << query.lastError();
         }
+        query.exec("RELEASE SavepointQt1;");
     }
     else
     {
@@ -145,6 +148,8 @@ bool DbHandler::updateLastMonitoringTuble(QString& message)
             if (value > 0)
             {
                 const QString DELETE = "DELETE FROM '";
+                query.exec("SAVEPOINT SavepointQt2;");
+
                 if(query.exec(DELETE + messageList[1] + "' WHERE rowid = (SELECT MAX(rowid) FROM '" + messageList[1] + "');"))
                 {
                     success = true;
@@ -154,6 +159,7 @@ bool DbHandler::updateLastMonitoringTuble(QString& message)
                     qDebug() << "add tubel failed: " << query.lastError();
                     success = false;
                 }
+
             }
             const QString INSERT = "INSERT INTO ";
             if(query.exec(INSERT + message + ";"))
@@ -165,6 +171,8 @@ bool DbHandler::updateLastMonitoringTuble(QString& message)
                 qDebug() << "add tubel failed: " << query.lastError();
                 success = false;
             }
+            query.exec("RELEASE SavepointQt2;");
+
         }
         else
         {
